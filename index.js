@@ -217,9 +217,10 @@ async function iris() {
   ui.status('Standing by.');
 
   document.getElementById('structure').addEventListener('click',async()=>{
-    $(function(){
-    var graph = document.getElementById("graph");
     
+    var graph = document.getElementById("graph");
+    graph.width=1000;
+    graph.height=75*maxi;
     const check=document.getElementById("myCheck").checked;
     
     
@@ -246,7 +247,7 @@ async function iris() {
     var arr1=Array();
     var count1,count2;
     for(i=0;i<l;i++){
-     arr1[i]=500-60*(nn[i]/2);
+     arr1[i]=((75*maxi)/2)-60*(nn[i]/2);
     }
     var j,k;
 
@@ -286,29 +287,66 @@ async function iris() {
             ctx.fill();
             ctx.strokeStyle='black';
             ctx.stroke();
-            
+            if(i==0){
+              dots.push({
+                x: 80*(i+1),
+                y: count1,
+                r: 10,
+                rXr: 100,
+                tip1:"layer no.: "+(i+1),
+                tip2:"input no.: "+(j+1),
+                tip3:""
+                
+                
+                });
+            }
+
+            else if(i+1<l){
             dots.push({
               x: 80*(i+1),
               y: count1,
               r: 10,
               rXr: 100,
-              tip1:"layer "+(i+1),
-              tip2:"neuron "+(j+1),
-              tip3:"activation:  'SIGMOID" 
+              tip1:"layer no.: "+(i+1),
+              tip2:"neuron no.: "+(j+1),
+              tip3:"activation:  'SIGMOID' " 
               
               
-          });
+              });
+            }
+            else{
+              dots.push({
+                x: 80*(i+1),
+                y: count1,
+                r: 10,
+                rXr: 100,
+                tip1:"layer no.: "+(i+1),
+                tip2:"neuron no.: "+(j+1),
+                tip3:"activation:  'SOFTMAX' " 
+                
+                
+            });
+            }
 
             count1+=60;
         }
     }
-    
+    dots.push({
+      x: 80*(i+1),
+      y:((75*maxi)/2)-30,
+      r:30,
+      rXr:900,
+      tip1:"",
+      tip2:"predicted class",
+      tip3:""
+
+    });
     // request mousemove events
-    $("#graph").mousemove(function(e){handleMouseMove(e);});
+    
     // show tooltip when mouse hovers over dot
-    function handleMouseMove(e){
-     mouseX=parseInt(e.clientX-offsetX);
-     mouseY=parseInt(e.clientY-offsetY);
+    graph.addEventListener("mousemove",function(e){
+     var mouseX=parseInt(e.pageX-offsetX);
+     var mouseY=parseInt(e.pageY-offsetY);
       // Put your mousemove stuff here
       var hit = false;
       for (var m = 0; m < dots.length; m++) {
@@ -316,19 +354,23 @@ async function iris() {
           var dx = mouseX - dot.x;
           var dy = mouseY - dot.y;
           if (dx * dx + dy * dy < dot.rXr) {
-              tipCanvas.style.left = (dot.x) + "px";
-              tipCanvas.style.top = (dot.y - 40) + "px";
+              tipCanvas.style.left = (e.pageX + 10) + "px";
+              tipCanvas.style.top = (e.pageY + 10) + "px";
               tipCtx.clearRect(0, 0, tipCanvas.width, tipCanvas.height);
               tipCtx.font = '15px Verdana';
+              
+              if(m<=(dots.length-1)){
               tipCtx.fillText(dot.tip1, 10, 20);
-              tipCtx.fillText(dot.tip2,10,60);
-              tipCtx.fillText(dot.tip3,10,80);
+              tipCtx.fillText(dot.tip2,10,40);
+              tipCtx.fillText(dot.tip3,10,60);
+              }
               
               hit = true;
+              break;
           }
       }
       if (!hit) { tipCanvas.style.left = "-200px"; }
-    }
+    });
 
 
     count1=arr1[l-1];
@@ -336,13 +378,13 @@ async function iris() {
       
       ctx.beginPath(); 
       ctx.moveTo(80*(i),count1);
-      ctx.lineTo(80*(i+1),(500-30));
+      ctx.lineTo(80*(i+1),(((75*maxi)/2)-30));
       ctx.strokeStyle='black';
       ctx.stroke();
       count1+=60;
     }
     ctx.beginPath();
-    ctx.arc(80*(i+1),500-30, 30,0,2*Math.PI);
+    ctx.arc(80*(i+1),((75*maxi)/2)-30, 30,0,2*Math.PI);
     ctx.fillStyle='rgb(200,255,0)';
     ctx.fill();
     ctx.strokeStyle='black';
@@ -350,7 +392,7 @@ async function iris() {
     ctx.font = "15px Arial";
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
-    ctx.fillText("output", 80*(i+1),(500-30));
+    ctx.fillText("output", 80*(i+1),(((75*maxi)/2)-30));
     
     function canvas_arrow(context, fromx, fromy, tox, toy) {
       var headlen = 10; // length of head in pixels
@@ -392,7 +434,7 @@ async function iris() {
     ctx.stroke();
     }
   });
-});
+
 
  
 
