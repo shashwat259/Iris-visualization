@@ -265,13 +265,19 @@ async function iris() {
            if(i+1<l){
                for(k=0;k<nn[i+1];k++){
                   ctx.beginPath(); 
-                  ctx.moveTo(80*(i+1),count1);
-                  ctx.lineTo(80*(i+2),count2);
+                  ctx.moveTo(100*(i+1),count1);
+                  ctx.lineTo(100*(i+2),count2);
                   if(check==true){
-                    if(Number(a[j][k])>0)
-                    ctx.strokeStyle='blue';
-                    else
-                    ctx.strokeStyle='green';
+                    if(Number(a[j][k])>0){
+                      var b=255-100*a[j][k];
+                     ctx.lineWidth=5*a[j][k]; 
+                    ctx.strokeStyle='rgb(0,0,'+b+')';
+                    }
+                    else{
+                      var c=255+100*a[j][k];
+                      ctx.lineWidth=-5*a[j][k];
+                    ctx.strokeStyle='rgb('+c+',0,0)';
+                    }
                   }
                   else{
                   ctx.strokeStyle='black';
@@ -282,14 +288,15 @@ async function iris() {
                }
 
             ctx.beginPath();
-            ctx.arc(80*(i+1),count1, 10,0,2*Math.PI);
+            ctx.lineWidth=1;
+            ctx.arc(100*(i+1),count1, 10,0,2*Math.PI);
             ctx.fillStyle='rgb(200,255,0)';
             ctx.fill();
             ctx.strokeStyle='black';
             ctx.stroke();
             if(i==0){
               dots.push({
-                x: 80*(i+1),
+                x: 100*(i+1),
                 y: count1,
                 r: 10,
                 rXr: 100,
@@ -303,7 +310,7 @@ async function iris() {
 
             else if(i+1<l){
             dots.push({
-              x: 80*(i+1),
+              x: 100*(i+1),
               y: count1,
               r: 10,
               rXr: 100,
@@ -316,7 +323,7 @@ async function iris() {
             }
             else{
               dots.push({
-                x: 80*(i+1),
+                x: 100*(i+1),
                 y: count1,
                 r: 10,
                 rXr: 100,
@@ -332,7 +339,7 @@ async function iris() {
         }
     }
     dots.push({
-      x: 80*(i+1),
+      x: 100*(i+1),
       y:((75*maxi)/2)-30,
       r:30,
       rXr:900,
@@ -377,14 +384,14 @@ async function iris() {
     for(k=0;k<3;k++){
       
       ctx.beginPath(); 
-      ctx.moveTo(80*(i),count1);
-      ctx.lineTo(80*(i+1),(((75*maxi)/2)-30));
+      ctx.moveTo(100*(i),count1);
+      ctx.lineTo(100*(i+1),(((75*maxi)/2)-30));
       ctx.strokeStyle='black';
       ctx.stroke();
       count1+=60;
     }
     ctx.beginPath();
-    ctx.arc(80*(i+1),((75*maxi)/2)-30, 30,0,2*Math.PI);
+    ctx.arc(100*(i+1),((75*maxi)/2)-30, 30,0,2*Math.PI);
     ctx.fillStyle='rgb(200,255,0)';
     ctx.fill();
     ctx.strokeStyle='black';
@@ -392,7 +399,7 @@ async function iris() {
     ctx.font = "15px Arial";
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
-    ctx.fillText("output", 80*(i+1),(((75*maxi)/2)-30));
+    ctx.fillText("output", 100*(i+1),(((75*maxi)/2)-30));
     
     function canvas_arrow(context, fromx, fromy, tox, toy) {
       var headlen = 10; // length of head in pixels
@@ -409,7 +416,7 @@ async function iris() {
     count1=arr1[0];
     for(i=0;i<4;i++){
       ctx.beginPath();
-      canvas_arrow(ctx,30, count1, 70, count1);
+      canvas_arrow(ctx,30, count1, 90, count1);
       ctx.stroke();
       count1+=60;
     }
@@ -430,7 +437,7 @@ async function iris() {
     ctx.beginPath(); 
     ctx.moveTo(800,40);
     ctx.lineTo(830,40);
-    ctx.strokeStyle='green';
+    ctx.strokeStyle='red';
     ctx.stroke();
     }
   });
